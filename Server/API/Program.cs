@@ -1,5 +1,7 @@
 using Infra;
 using LinqToDB;
+using Service;
+using Tests.API;
 
 var builder = WebApplication.CreateBuilder(args);
 

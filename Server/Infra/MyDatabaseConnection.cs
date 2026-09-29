@@ -9,8 +9,8 @@ public class MyDatabaseConnection : DataConnection
     {
     }
 
-    public ITable<User> Users => this.GetTable<User>();
-    public ITable<Item> Items => this.GetTable<Item>();
-    public ITable<Category> Categories => this.GetTable<Category>();
-    public ITable<Deal> Deals => this.GetTable<Deal>();
+    public ITable<UserItem> Users => this.GetTable<UserItem>();
+    public ITable<ListingItem> Items => this.GetTable<ListingItem>();
+    public ITable<CategoryItem> Categories => this.GetTable<CategoryItem>();
+    public ITable<DealItem> Deals => this.GetTable<DealItem>();
 }

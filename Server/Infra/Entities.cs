@@ -12,8 +12,9 @@ public class UserItem
 {
     [PrimaryKey, Identity] public int UserId { get; set; }
     [NotNull] public string UserName { get; set; } = null!;
-    public string? AvatarURL { get; set; }
+    public string? AvatarUrl { get; set; }
     [NotNull] public Role Role { get; set; } = Role.User;
+    [NotNull] public bool IsBanned { get; set; } = false;
 
     [Association(ThisKey = nameof(UserId), OtherKey = nameof(ListingItem.OwnerId))]
     public List<ListingItem> Inventory { get; set; } = new();
