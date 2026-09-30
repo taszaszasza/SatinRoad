@@ -6,7 +6,7 @@ namespace API.Controllers;
 public class UserController(UserService service) : ControllerBase
 {
     [HttpPost(nameof(CreateUser))]
-    public Dtos.UserDto CreateUser([FromBody] Dtos.CreateUserDto dto)
+    public Dtos.UserDto CreateUser(Dtos.CreateUserDto dto)
     {
         return service.CreateUser(dto);
     }
@@ -24,7 +24,7 @@ public class UserController(UserService service) : ControllerBase
     }
 
     [HttpPut(nameof(UpdateUser))]
-    public Dtos.UserDto UpdateUser([FromQuery] int id, [FromBody] Dtos.CreateUserDto dto)
+    public Dtos.UserDto UpdateUser([FromQuery] int id, Dtos.CreateUserDto dto)
     {
         return service.UpdateUser(id, dto);
     }
