@@ -54,6 +54,9 @@ public class UserService(MyDatabaseConnection db)
         if (!db.Users.Any(u => u.UserId == userId)) throw new KeyNotFoundException("No user with this id");
 
         if (string.IsNullOrWhiteSpace(dto.UserName)) throw new ValidationException("Username cannot be null");
+        if (db.Users.Any(u => u.UserName.ToLower().Trim() == dto.UserName.ToLower().Trim()))
+            throw new ValidationException("User with this username already exists");
+
 
         var user = db.Users.FirstOrDefault(u => u.UserId == userId);
 
@@ -94,5 +97,23 @@ public class UserService(MyDatabaseConnection db)
         }
         
         transaction.Commit();
+    }
+
+    public Dtos.UserDto BanUser(int userId)
+    {
+        var item = db.Users.FirstOrDefault(u => u.UserId == userId);
+        if (item == null) throw new KeyNotFoundException("No such user");
+        if (item.IsBanned) throw new ValidationException("User is already banned");
+        
+        using var transaction = db.BeginTransaction();
+        
+        db.Users.Where(u => u.UserId == userId).Set(u => u.IsBanned, true).Update();
+
+        db.Items.Where(l => l.OwnerId == userId && l.IsListed).Set(l => l.IsListed, false).Update();
+        
+        transaction.Commit();
+
+        return GetUserById(userId);
+
     }
 }

@@ -1,11 +1,35 @@
 using Microsoft.AspNetCore.Diagnostics;
+using System.ComponentModel.DataAnnotations;
+using LinqToDB.Internal.SqlQuery;
+using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.Mvc;
 
-namespace Tests.API;
+namespace API;
 
 public class MyExceptionHandler : IExceptionHandler
 {
-    public ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
+    public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception,
+        CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+
+
+        var (statusCode, title) = exception switch
+        {
+            KeyNotFoundException => (StatusCodes.Status404NotFound, "Resource Not Found"),
+            ValidationException => (StatusCodes.Status400BadRequest, "Validation Error"),
+            _ => (StatusCodes.Status500InternalServerError, "Internal Server Error")
+        };
+
+        httpContext.Response.StatusCode = statusCode;
+
+        await httpContext.Response.WriteAsJsonAsync(
+            new ProblemDetails()
+            {
+                Status = statusCode,
+                Title = title,
+                Detail = exception.Message
+            }, cancellationToken);
+
+        return true;
     }
 }
