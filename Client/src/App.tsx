@@ -30,6 +30,8 @@ export function App() {
 
     return (
         <div className="app-container">
+            {!currentUser ? (
+                <>
             <header className="app-header">
                 <h1 className="satin-logo">✧*｡ Satin Road ｡*✧</h1>
                 <p className="satin-tagline">
@@ -38,6 +40,15 @@ export function App() {
             </header>
 
             <main>{renderScreen()}</main>
+                </> ) : (
+                <main>
+                    {currentUser.role === Role.Admin ? (
+                        <AdminDashboard currentUser={currentUser} onLogout={handleLogout} />
+                    ) : (
+                        <UserDashboard currentUser={currentUser} onLogout={handleLogout} />
+                    )}
+                </main>
+                )}
         </div>
     );
 }
