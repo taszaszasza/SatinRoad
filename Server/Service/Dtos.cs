@@ -6,7 +6,8 @@ public class Dtos
 {
     public record CreateUserDto(
         string UserName,
-        string? AvatarUrl
+        string? AvatarUrl,
+        Role Role = Role.User
     );
 
     public record UserDto(
@@ -87,6 +88,11 @@ public class Dtos
         int BuyerId,
         string BuyerName
     );
+
+    public record LoginRequestDto(
+        string Username,
+        Role SelectedRole
+        );
 
 
 }

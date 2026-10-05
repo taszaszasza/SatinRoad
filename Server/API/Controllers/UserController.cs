@@ -41,4 +41,10 @@ public class UserController(UserService service) : ControllerBase
         return service.BanUser(userId);
     }
 
+    [HttpPost(nameof(Login))]
+    public Dtos.UserDto Login(Dtos.LoginRequestDto dto)
+    {
+        return service.Login(dto);
+    }
+
 }

@@ -145,6 +145,19 @@ body {
   font-weight: 700;
   font-size: 0.95rem;
   color: var(--text-secondary);
+  position: relative;
+}
+
+.y2k-window-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 100px); /* Leaves room so text doesn't overlap dots */
+  text-align: center;
+  pointer-events: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .y2k-window-controls {
@@ -402,4 +415,10 @@ body {
   letter-spacing: 0.5px;
   background: rgba(255, 20, 147, 0.1);
   color: var(--bubblegum-deep);
+}
+
+.error-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
 }

@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Reflection.Metadata;
 using Infra;
 using LinqToDB;
+using Microsoft.AspNetCore.Builder;
 
 namespace Service;
 
@@ -17,7 +18,7 @@ public class UserService(MyDatabaseConnection db)
         {
             UserName = dto.UserName.Trim(),
             AvatarUrl = dto.AvatarUrl,
-            Role = Role.User,
+            Role = dto.Role,
             IsBanned = false
         };
         item.UserId = db.InsertWithInt32Identity(item);
@@ -115,5 +116,20 @@ public class UserService(MyDatabaseConnection db)
 
         return GetUserById(userId);
 
+    }
+
+    public Dtos.UserDto Login(Dtos.LoginRequestDto dto)
+    {
+        if(string.IsNullOrWhiteSpace(dto.Username)) throw new ValidationException("Username cannot be empty");
+        var trimmedUsername = dto.Username.ToLower().Trim();
+        
+        var user = db.Users.FirstOrDefault(u => u.UserName.ToLower().Trim() == trimmedUsername);
+        if (user == null) throw new KeyNotFoundException("No user with this username");
+        
+        if(user.IsBanned) throw new ValidationException("User is already banned");
+        
+        if(user.Role != dto.SelectedRole) throw new ValidationException($"Access denied, this user is not a {dto.SelectedRole}");
+        
+        return new Dtos.UserDto(user.UserId, user.UserName, user.AvatarUrl, user.Role, user.IsBanned);
     }
 }
