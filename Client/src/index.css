@@ -40,6 +40,8 @@
   --radius-md: 14px;
   --radius-sm: 8px;
   --radius-pill: 9999px;
+  
+  --glass-card: rgba(255, 255, 255, 0.7);
 }
 
 * {
@@ -273,6 +275,28 @@ body {
   box-shadow: 0 6px 14px rgba(255, 20, 147, 0.15);
 }
 
+.y2k-btn-exit {
+  background: transparent;
+  border: 1px solid rgba(255, 77, 148, 0.18);
+  color: #9d8390;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 0.74rem;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  cursor: pointer;
+  opacity: 0.75;
+  transition: all 0.2s ease;
+}
+
+.y2k-btn-exit:hover {
+  background: rgba(255, 105, 180, 0.08);
+  color: #c2185b;
+  border-color: rgba(255, 20, 147, 0.35);
+  opacity: 1;
+  transform: none;
+}
+
 /* ==========================================================================
    Inputs & Forms
    ========================================================================== */
@@ -421,4 +445,97 @@ body {
   display: flex;
   justify-content: center;
   margin-bottom: 16px;
+}
+
+/* --- Y2K Nav Bar --- */
+.y2k-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--glass-card, rgba(255, 255, 255, 0.7));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1.5px solid rgba(255, 77, 148, 0.25);
+  border-radius: 16px;
+  padding: 10px 20px;
+  margin-bottom: 24px;
+  box-shadow: 0 8px 24px rgba(255, 77, 148, 0.1);
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  padding-left: 4px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.navbar-menu {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.navbar-item {
+  background: transparent;
+  border: 1.5px solid transparent;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--text-secondary, #666);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.navbar-item:hover {
+  background: rgba(255, 105, 180, 0.1);
+  color: var(--bubblegum-deep, #ff1493);
+  border-color: rgba(255, 105, 180, 0.25);
+}
+
+.navbar-item.active {
+  background: linear-gradient(135deg, #ff69b4, #ff1493);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 4px 12px rgba(255, 20, 147, 0.25);
+}
+
+.navbar-item.navbar-admin-item {
+  border-style: dashed;
+  border-color: rgba(255, 20, 147, 0.4);
+}
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.navbar-agent-tag {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--bubblegum-deep, #ff1493);
+  background: rgba(255, 105, 180, 0.1);
+  padding: 4px 10px;
+  border-radius: 12px;
+}
+
+/* Prevent buttons and brand text from breaking across lines */
+.navbar-item,
+.navbar-brand,
+.navbar-actions {
+  white-space: nowrap;       /* Keeps text on a single line */
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  line-height: 1;            /* Eliminates awkward vertical text height */
+}
+
+/* Ensure the navbar container itself doesn't wrap or squish items */
+.y2k-navbar {
+  flex-wrap: nowrap;
+  align-items: center;
 }
