@@ -12,7 +12,9 @@ public class DealService(MyDatabaseConnection db)
         if (listing == null) throw new ValidationException("No such listing");
         if(!listing.IsListed) throw new ValidationException("Listing is currently inactive");
         if (listing.OwnerId == dto.BuyerId) throw new ValidationException("You cant buy your own item");
-        if (listing.Owner.IsBanned) throw new ValidationException("This seller was banned");
+
+        var isBanned = db.Users.Where(u => u.UserId == listing.OwnerId).Select(u => u.IsBanned).FirstOrDefault();
+        if (isBanned) throw new ValidationException("This seller was banned");
 
         var buyer = db.Users.FirstOrDefault(u => u.UserId == dto.BuyerId);
         if (buyer == null) throw new ValidationException("Buyer not found");
