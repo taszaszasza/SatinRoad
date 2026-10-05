@@ -6,7 +6,7 @@ namespace Service;
 
 public class ListingService(MyDatabaseConnection db)
 {
-    public Dtos.ListingDto CreateListingDto(Dtos.CreateListingDto dto)
+    public Dtos.ListingDto CreateListing(Dtos.CreateListingDto dto)
     {
         if(string.IsNullOrWhiteSpace(dto.ListingName)) throw new ValidationException("Listing name is required");
         if (dto.Price <= 0) throw new ValidationException("Incorrect Price");
@@ -68,7 +68,7 @@ public class ListingService(MyDatabaseConnection db)
 
     public Dtos.ListingDto UpdateListing(int listingId, Dtos.UpdateListingDto dto)
     {
-        if (!db.Items.Any(i => i.ListingId == listingId)) throw new KeyNotFoundException("no such listing");
+        if (!db.Items.Any(i => i.ListingId == listingId && i.IsListed)) throw new KeyNotFoundException("no such active listing");
         if (dto.Price <= 0) throw new ValidationException("Incorrect Price");
         if(!db.Categories.Any(c => c.CategoryId == dto.CategoryId)) throw new ValidationException("Category not found");
         if(string.IsNullOrWhiteSpace(dto.ListingName)) throw new ValidationException("Listing name is required");
@@ -98,18 +98,52 @@ public class ListingService(MyDatabaseConnection db)
 
     }
     
-    public Dtos.ListingDto InactivateListing(int listingId)
+    public Dtos.ListingDto ToggleActivateListing(int listingId)
     {
         if (!db.Items.Any(i => i.ListingId == listingId)) throw new KeyNotFoundException("no such listing");
         if (db.Deals.Any(d => d.ListingId == listingId)) throw new ValidationException("This item was already sold");
 
 
         var listing = db.Items.FirstOrDefault(l => l.ListingId == listingId);
-        listing.IsListed = false;
+        if (!listing.IsListed)
+        {
+            var isBanned = db.Users.Where(u => u.UserId == listing.OwnerId)
+                .Select(u => u.IsBanned).FirstOrDefault();
+            if (isBanned)
+            {
+                throw new ValidationException("This user is banned - can't activate their listing");
+            }
+
+            listing.IsListed = true;
+        }
+        else
+        {
+            
+                listing.IsListed = false;
+        }
 
         db.Update(listing);
         
         return GetListingById(listingId);
 
-    } 
+    }
+
+    public List<Dtos.ListingDto> GetListingsByUserId(int id)
+    {
+        if(!db.Users.Any(u => u.UserId == id)) throw new KeyNotFoundException("User not found");
+         
+        return db.Items.Where(i => i.OwnerId == id).Select(
+            i => new Dtos.ListingDto
+            (
+                i.ListingId,
+               i.ListingName,
+               i.ListingDescription,
+               i.Price,
+               i.ImageURL,
+               i.CategoryId,
+               i.Category.CategoryName,
+               i.OwnerId,
+               i.Owner.UserName
+            )).ToList();
+    }
 }
