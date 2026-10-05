@@ -5,7 +5,7 @@ namespace Infra;
 public enum Role
 {
     User = 1,
-    Admin = 2
+    Admin = 0
 }
 
 public class UserItem

@@ -11,8 +11,8 @@
  */
 
 export enum Role {
+  Admin = 0,
   User = 1,
-  Admin = 2,
 }
 
 export interface CategoryDto {
@@ -665,6 +665,7 @@ export class Api<
       query?: {
         UserName?: string;
         AvatarUrl?: string | null;
+        Role?: Role;
       },
       params: RequestParams = {},
     ) =>
@@ -729,6 +730,7 @@ export class Api<
         id?: number;
         UserName?: string;
         AvatarUrl?: string | null;
+        Role?: Role;
       },
       params: RequestParams = {},
     ) =>
@@ -780,6 +782,29 @@ export class Api<
       this.request<UserDto, any>({
         path: `/BanUser`,
         method: "PUT",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+  };
+  login = {
+    /**
+     * No description
+     *
+     * @tags User
+     * @name UserLogin
+     * @request POST:/Login
+     */
+    userLogin: (
+      query?: {
+        Username?: string;
+        SelectedRole?: Role;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<UserDto, any>({
+        path: `/Login`,
+        method: "POST",
         query: query,
         format: "json",
         ...params,
