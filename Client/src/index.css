@@ -1,187 +1,405 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,600;0,700;0,800;1,800&family=Space+Grotesk:wght@500;700&display=swap');
+
+/* ==========================================================================
+   Design Tokens & Variables (Zero-Green Bubblegum Cyber Palette)
+   ========================================================================== */
+
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  /* Pinks & Bases */
+  --bg-base: #ffe8f2;
+  --bubblegum-deep: #ff1493;
+  --bubblegum-bright: #ff4d94;
+  --bubblegum-soft: #ff85b3;
+  --cotton-candy: #fff0f7;
+  --pure-white: #ffffff;
+
+  /* Accent Tones (Replacements for green) */
+  --glitter-gold: #ffbe0b;
+  --gold-text: #8c5800;
+  --gold-bg: rgba(255, 190, 11, 0.2);
+  --gold-border: rgba(255, 190, 11, 0.5);
+
+  --cyber-blue: #00b4d8;
+  --blue-text: #005b73;
+  --blue-bg: rgba(0, 180, 216, 0.15);
+  --blue-border: rgba(0, 180, 216, 0.4);
+
+  /* Typography Colors */
+  --text-primary: #3d0023;
+  --text-secondary: #8c255b;
+  --text-muted: #b85c8a;
+
+  /* Surfaces & Glassmorphism */
+  --glass-surface: rgba(255, 255, 255, 0.75);
+  --glass-header: rgba(255, 240, 247, 0.9);
+  --glass-border: rgba(255, 255, 255, 0.85);
+  --glass-shadow: 0 16px 36px -8px rgba(214, 28, 114, 0.16), 0 4px 12px rgba(0, 0, 0, 0.04);
+
+  /* Radii */
+  --radius-lg: 20px;
+  --radius-md: 14px;
+  --radius-sm: 8px;
+  --radius-pill: 9999px;
 }
+
+* {
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   Base Page & Y2K Cyber Plaid Grid Background
+   ========================================================================== */
+
 body {
   margin: 0;
-  display: grid;
-  place-items: center;
-  min-width: 320px;
+  padding: 0;
   min-height: 100vh;
-  position: relative;
+  color: var(--text-primary);
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg-base);
+  background-image:
+          linear-gradient(rgba(255, 77, 148, 0.2) 2px, transparent 2px),
+          linear-gradient(90deg, rgba(255, 77, 148, 0.2) 2px, transparent 2px),
+          linear-gradient(rgba(255, 182, 193, 0.4) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 182, 193, 0.4) 1px, transparent 1px);
+  background-size: 50px 50px, 50px 50px, 10px 10px, 10px 10px;
+  background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
 }
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  opacity: 0.05;
-  background: url("./logo.svg");
-  background-size: 256px;
-  transform: rotate(-12deg) scale(1.35);
-  animation: slide 30s linear infinite;
-  pointer-events: none;
-}
-@keyframes slide {
-  from {
-    background-position: 0 0;
-  }
-  to {
-    background-position: 256px 224px;
-  }
-}
-.app {
-  max-width: 1280px;
+
+/* ==========================================================================
+   Layout Containers & Headers
+   ========================================================================== */
+
+.app-container {
+  max-width: 960px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 32px 20px;
+}
+
+.app-header {
   text-align: center;
-  position: relative;
-  z-index: 1;
+  margin-bottom: 32px;
 }
-.logo-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 2rem;
-  margin-bottom: 2rem;
+
+.satin-logo {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 3.2rem;
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: -1px;
+  background: linear-gradient(135deg, #ff007f 0%, #ff529a 30%, #ffbe0b 70%, #ff007f 100%);
+  background-size: 250% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: shimmer 4s ease-in-out infinite;
+  filter: drop-shadow(0 4px 12px rgba(255, 0, 127, 0.25));
+  margin: 0 0 8px 0;
 }
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 0.3s;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.bun-logo {
-  transform: scale(1.2);
-}
-.bun-logo:hover {
-  filter: drop-shadow(0 0 2em #fbf0dfaa);
-}
-.react-logo {
-  animation: spin 20s linear infinite;
-}
-.react-logo:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-@keyframes spin {
-  from {
-    transform: rotate(0);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-code {
-  background-color: #1a1a1a;
-  padding: 0.2em 0.4em;
-  border-radius: 0.3em;
-  font-family: monospace;
-}
-.api-tester {
-  margin: 2rem auto 0;
-  width: 100%;
-  max-width: 600px;
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-.endpoint-row {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: #1a1a1a;
-  padding: 0.75rem;
-  border-radius: 12px;
-  font: monospace;
-  border: 2px solid #fbf0df;
-  transition: 0.3s;
-  width: 100%;
-  box-sizing: border-box;
-}
-.endpoint-row:focus-within {
-  border-color: #f3d5a3;
-}
-.method {
-  background: #fbf0df;
-  color: #1a1a1a;
-  padding: 0.3rem 0.7rem;
-  border-radius: 8px;
+
+.satin-tagline {
+  font-size: 0.95rem;
   font-weight: 700;
-  font-size: 0.9em;
-  appearance: none;
+  color: var(--text-secondary);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
   margin: 0;
-  width: min-content;
-  display: block;
-  flex-shrink: 0;
-  border: none;
 }
-.method option {
-  text-align: left;
+
+@keyframes shimmer {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
-.url-input {
-  width: 100%;
-  flex: 1;
-  background: 0;
-  border: 0;
-  color: #fbf0df;
-  font: 1em monospace;
-  padding: 0.2rem;
-  outline: 0;
+
+/* ==========================================================================
+   Y2K Windows (Frosted Glass Panels)
+   ========================================================================== */
+
+.y2k-window {
+  background: var(--glass-surface);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 2px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--glass-shadow);
+  overflow: hidden;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
 }
-.url-input:focus {
-  color: #fff;
+
+.y2k-window-modal {
+  max-width: 440px;
+  margin: 0 auto;
 }
-.url-input::placeholder {
-  color: rgba(251, 240, 223, 0.4);
-}
-.send-button {
-  background: #fbf0df;
-  color: #1a1a1a;
-  border: 0;
-  padding: 0.4rem 1.2rem;
-  border-radius: 8px;
+
+.y2k-window-header {
+  background: var(--glass-header);
+  padding: 14px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1.5px solid rgba(255, 77, 148, 0.15);
+  font-family: 'Space Grotesk', sans-serif;
   font-weight: 700;
-  transition: 0.1s;
-  cursor: var(--bun-cursor);
+  font-size: 0.95rem;
+  color: var(--text-secondary);
 }
-.send-button:hover {
-  background: #f3d5a3;
-  transform: translateY(-1px);
+
+.y2k-window-controls {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.y2k-control-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-pill);
+  background: #ffb3d4;
+  border: 1px solid rgba(255, 20, 147, 0.3);
+  display: inline-block;
+}
+
+.y2k-control-dot.close {
+  background: #ff3377;
   cursor: pointer;
 }
-.response-area {
+
+.y2k-window-body {
+  padding: 24px;
+}
+
+/* ==========================================================================
+   Status Banners & Indicators (Zero Green)
+   ========================================================================== */
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: var(--radius-pill);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.status-online {
+  background: var(--gold-bg);
+  color: var(--gold-text);
+  border: 1.5px solid var(--gold-border);
+  box-shadow: 0 4px 12px rgba(255, 190, 11, 0.25);
+}
+
+.status-offline {
+  background: rgba(255, 20, 147, 0.12);
+  color: var(--bubblegum-deep);
+  border: 1.5px solid rgba(255, 20, 147, 0.3);
+}
+
+.status-loading {
+  background: var(--blue-bg);
+  color: var(--blue-text);
+  border: 1.5px solid var(--blue-border);
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* ==========================================================================
+   Buttons (Tactile Candy Gloss)
+   ========================================================================== */
+
+.y2k-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: linear-gradient(180deg, #ff66a3 0%, #ff1493 100%);
+  color: var(--pure-white);
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  border-radius: var(--radius-pill);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 12px 24px;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(255, 20, 147, 0.3), inset 0 2px 3px rgba(255, 255, 255, 0.4);
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  text-decoration: none;
+}
+
+.y2k-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(255, 20, 147, 0.45), inset 0 2px 4px rgba(255, 255, 255, 0.5);
+  background: linear-gradient(180deg, #ff7ab0 0%, #ff1a9b 100%);
+}
+
+.y2k-btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 3px 8px rgba(255, 20, 147, 0.3);
+}
+
+.y2k-btn-block {
   width: 100%;
-  min-height: 120px;
-  background: #1a1a1a;
-  border: 2px solid #fbf0df;
-  border-radius: 12px;
-  padding: 0.75rem;
-  color: #fbf0df;
-  font: monospace;
-  resize: vertical;
-  box-sizing: border-box;
 }
-.response-area:focus {
-  border-color: #f3d5a3;
+
+.y2k-btn-secondary {
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--bubblegum-deep);
+  border: 2px solid rgba(255, 20, 147, 0.2);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
-.response-area::placeholder {
-  color: rgba(251, 240, 223, 0.4);
+
+.y2k-btn-secondary:hover {
+  background: var(--pure-white);
+  border-color: var(--bubblegum-deep);
+  box-shadow: 0 6px 14px rgba(255, 20, 147, 0.15);
 }
-@media (prefers-reduced-motion) {
-  *,
-  ::before,
-  ::after {
-    animation: none !important;
-  }
+
+/* ==========================================================================
+   Inputs & Forms
+   ========================================================================== */
+
+.y2k-form-group {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.y2k-label {
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-secondary);
+}
+
+.y2k-input, .y2k-textarea, .y2k-select {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1.5px solid rgba(255, 77, 148, 0.25);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.y2k-input:focus, .y2k-textarea:focus, .y2k-select:focus {
+  background: var(--pure-white);
+  border-color: var(--bubblegum-deep);
+  box-shadow: 0 0 0 4px rgba(255, 20, 147, 0.15);
+}
+
+/* ==========================================================================
+   Role Toggle (Segmented Pill)
+   ========================================================================== */
+
+.role-toggle-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.role-toggle {
+  background: rgba(255, 214, 231, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  padding: 4px;
+  border-radius: var(--radius-pill);
+  display: inline-flex;
+  gap: 4px;
+}
+
+.role-toggle button {
+  background: transparent;
+  border: none;
+  padding: 8px 18px;
+  border-radius: var(--radius-pill);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.role-toggle button.active {
+  background: var(--pure-white);
+  color: var(--bubblegum-deep);
+  box-shadow: 0 4px 10px rgba(255, 20, 147, 0.2);
+}
+
+/* ==========================================================================
+   Product Cards & Grid
+   ========================================================================== */
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 22px;
+  padding: 12px 0;
+}
+
+.product-card {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  border: 2px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 10px 24px -6px rgba(214, 28, 114, 0.12);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 18px 30px -4px rgba(214, 28, 114, 0.25);
+  border-color: var(--bubblegum-soft);
+}
+
+.product-thumb {
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  margin-bottom: 12px;
+  background-color: var(--cotton-candy);
+}
+
+.product-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 6px 0;
+}
+
+.product-price {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--bubblegum-deep);
+  margin: 6px 0 14px 0;
+}
+
+.y2k-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: rgba(255, 20, 147, 0.1);
+  color: var(--bubblegum-deep);
 }
