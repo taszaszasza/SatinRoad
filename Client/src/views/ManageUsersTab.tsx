@@ -165,12 +165,14 @@ export function ManageUsersTab({currentUser}: ManageUsersTabProps) {
                 <EditUserWindow
                     user={editingUser}
                     onClose={() => setEditingUser(null)}
-                    onSuccess={loadUsers} />) }
+                    onSuccess={loadUsers}
+                canEditRole={true} />) }
             {isCreating && (
                 <EditUserWindow
                     user={null}
                     onClose={() => setIsCreating(false)}
-                    onSuccess={loadUsers} />) }
+                    onSuccess={loadUsers}
+                canEditRole={true} />) }
         </div>
     );
 }  

@@ -1,16 +1,30 @@
 import { Window } from "../components/Window.tsx";
-import { type UserDto } from "../../Api.ts";
+import { Api, type UserDto } from "../../Api.ts";
 import {NavBar, type NavTab} from "../components/NavBar.tsx";
 import {useState} from "react";
 import {ManageUsersTab} from "@/views/ManageUsersTab.tsx";
+import {MyProfileTab} from "@/views/MyProfileTab.tsx";
+
+const MyApi = new Api();
 
 interface AdminDashboardProps {
     currentUser: UserDto;
     onLogout: () => void;
 }
 
-export function AdminDashboard({ currentUser, onLogout }: AdminDashboardProps) {
+export function AdminDashboard({ currentUser: initalUser, onLogout }: AdminDashboardProps) {
     const [tab, setTab] = useState<NavTab>("shopping");
+    const [currentUser, setCurrentUser] = useState<UserDto>(initalUser);
+
+    function refreshCurrentUser() {
+        if (!currentUser?.userId) return;
+
+        MyApi.getUserById.userGetUserById({ userId: currentUser.userId }).then((res) => {
+            setCurrentUser(res.data);
+        }).catch((err) => {
+            console.error("Failed to refresh profile", err);
+        });
+    }
     return (
         <div style={{maxWidth: "900px", margin: "0 auto"}}>
             <NavBar
@@ -35,10 +49,7 @@ export function AdminDashboard({ currentUser, onLogout }: AdminDashboardProps) {
                 )}
 
                 {tab === "profile" && (
-                <div className="text-center" style={{padding: "40px 0"}}>
-                    <h2>👤 Agent Dossier</h2>
-                    <p style={{color: "var(--text-secondary)"}}>Codename: @{currentUser.userName}</p>
-                </div>
+                <MyProfileTab currentUser={currentUser} onProfileUpdated={refreshCurrentUser} />
                     
                     
             )}

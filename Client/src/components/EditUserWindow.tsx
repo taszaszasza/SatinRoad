@@ -7,9 +7,10 @@ interface EditUserWindowProps {
     user?: UserDto | null;
     onClose: () => void;
     onSuccess: () => void;
+    canEditRole?: boolean;
 }
 
-export function EditUserWindow({user, onClose, onSuccess}: EditUserWindowProps)
+export function EditUserWindow({user, onClose, onSuccess, canEditRole = false}: EditUserWindowProps)
 {
     const isEditing = Boolean(user&&user.userId);
 
@@ -62,7 +63,6 @@ export function EditUserWindow({user, onClose, onSuccess}: EditUserWindowProps)
                 style={{ width: "100%" }}
                 onClick={(e) => e.stopPropagation()}
             >
-                {/* Header bar matching your app design */}
                 <div className="y2k-window-header">
                     <div className="y2k-window-controls">
                         <span className="y2k-control-dot close" onClick={onClose} title="Close" />
@@ -72,7 +72,6 @@ export function EditUserWindow({user, onClose, onSuccess}: EditUserWindowProps)
                     <span className="y2k-window-title">Edit Agent — @{user?.userName}</span>
                 </div>
 
-                {/* Body using your existing form styles */}
                 <div className="y2k-window-body">
                     {error && (
                         <div className="error-container">
@@ -101,17 +100,19 @@ export function EditUserWindow({user, onClose, onSuccess}: EditUserWindowProps)
                         />
                     </div>
 
-                    <div className="y2k-form-group">
-                        <label className="y2k-label">Role</label>
-                        <select
-                            className="y2k-select"
-                            value={role}
-                            onChange={(e) => setRole(Number(e.target.value) as Role)}
-                        >
-                            <option value={Role.User}>User</option>
-                            <option value={Role.Admin}>Admin</option>
-                        </select>
-                    </div>
+                    {canEditRole && (
+                        <div className="y2k-form-group">
+                            <label className="y2k-label">Role</label>
+                            <select
+                                className="y2k-select"
+                                value={role}
+                                onChange={(e) => setRole(Number(e.target.value) as Role)}
+                            >
+                                <option value={Role.User}>User</option>
+                                <option value={Role.Admin}>Admin</option>
+                            </select>
+                        </div>
+                    )}
 
                     <div style={{ display: "flex", gap: "10px", justifyContent: "flex-end", marginTop: "20px" }}>
                         <button
