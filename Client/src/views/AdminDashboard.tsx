@@ -2,6 +2,7 @@ import { Window } from "../components/Window.tsx";
 import { type UserDto } from "../../Api.ts";
 import {NavBar, type NavTab} from "../components/NavBar.tsx";
 import {useState} from "react";
+import {ManageUsersTab} from "@/views/ManageUsersTab.tsx";
 
 interface AdminDashboardProps {
     currentUser: UserDto;
@@ -18,7 +19,7 @@ export function AdminDashboard({ currentUser, onLogout }: AdminDashboardProps) {
                 onTabChange={setTab}
                 onLogout={onLogout}></NavBar>
 
-            <Window title={`Shopper_Console.exe - [${tab.toUpperCase()}]`} onClose={onLogout}>
+            <div className="dashboard-content">
                 {tab === "shopping" && (
                     <div className="text-center" style={{padding: "40px 0"}}>
                         <h2>🛍️️ Contraband Catalog</h2>
@@ -42,14 +43,9 @@ export function AdminDashboard({ currentUser, onLogout }: AdminDashboardProps) {
                     
             )}
 
-                {tab === "manage-users" && (
-                    <div className="text-center" style={{padding: "40px 0"}}>
-                        <h2>👤 here manage</h2>
-                    </div>
-
-
-                )}
-            </Window>
+                {tab === "manage-users" && <ManageUsersTab currentUser={currentUser} /> }
+                
+            </div>
         </div>
     );
 }
