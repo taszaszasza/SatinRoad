@@ -1,15 +1,29 @@
 import { Window } from "../components/Window.tsx";
-import { type UserDto } from "../../Api.ts";
+import {Api, type UserDto } from "../../Api.ts";
 import {NavBar, type NavTab} from "../components/NavBar.tsx";
 import {useState} from "react";
+import {MyProfileTab} from "@/views/MyProfileTab.tsx";
+
+const MyApi = new Api();
 
 interface UserDashboardProps {
     currentUser: UserDto;
     onLogout: () => void;
 }
 
-export function UserDashboard({ currentUser, onLogout }: UserDashboardProps) {
+export function UserDashboard({ currentUser: initalUser, onLogout }: UserDashboardProps) {
     const [tab, setTab] = useState<NavTab>("shopping");
+    const [currentUser, setCurrentUser] = useState<UserDto>(initalUser);
+
+    function refreshCurrentUser() {
+        if (!currentUser?.userId) return;
+
+        MyApi.getUserById.userGetUserById({ userId: currentUser.userId }).then((res) => {
+            setCurrentUser(res.data);
+        }).catch((err) => {
+            console.error("Failed to refresh profile", err);
+        });
+    }
     return (
         <div style={{maxWidth: "900px", margin: "0 auto"}}>
             <NavBar
@@ -18,7 +32,6 @@ export function UserDashboard({ currentUser, onLogout }: UserDashboardProps) {
                 onTabChange={setTab}
                 onLogout={onLogout}></NavBar>
 
-            <Window title={`Shopper_Console.exe - [${tab.toUpperCase()}]`} onClose={onLogout}>
                 {tab === "shopping" && (
                     <div className="text-center" style={{padding: "40px 0"}}>
                         <h2>🛍️️ Contraband Catalog</h2>
@@ -33,13 +46,9 @@ export function UserDashboard({ currentUser, onLogout }: UserDashboardProps) {
                     </div>
                 )}
 
-                ) {tab === "profile" && (
-                <div className="text-center" style={{padding: "40px 0"}}>
-                    <h2>👤 Agent Dossier</h2>
-                    <p style={{color: "var(--text-secondary)"}}>Codename: @{currentUser.userName}</p>
-                </div>
+                {tab === "profile" && (
+                <MyProfileTab currentUser={currentUser} onProfileUpdated={refreshCurrentUser} />
             )}
-            </Window>
         </div>
     );
 }
