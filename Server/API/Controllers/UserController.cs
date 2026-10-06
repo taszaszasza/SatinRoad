@@ -38,7 +38,7 @@ public class UserController(UserService service) : ControllerBase
     [HttpPut(nameof(BanUser))]
     public Dtos.UserDto BanUser([FromQuery] int userId)
     {
-        return service.BanUser(userId);
+        return service.ToggleBanUser(userId);
     }
 
     [HttpPost(nameof(Login))]
