@@ -3,6 +3,7 @@ import {Api, type UserDto } from "../../Api.ts";
 import {NavBar, type NavTab} from "../components/NavBar.tsx";
 import {useState} from "react";
 import {MyProfileTab} from "@/views/MyProfileTab.tsx";
+import {ShoppingTab} from "@/views/ShoppingTab.tsx";
 
 const MyApi = new Api();
 
@@ -33,18 +34,12 @@ export function UserDashboard({ currentUser: initalUser, onLogout }: UserDashboa
                 onLogout={onLogout}></NavBar>
 
                 {tab === "shopping" && (
-                    <div className="text-center" style={{padding: "40px 0"}}>
-                        <h2>🛍️️ Contraband Catalog</h2>
-                        <p style={{color: "var(--text-secondary)"}}>Shopping gallery coming here next.</p>
-                    </div>
+                    <ShoppingTab currentUser={initalUser} isMyShop={false}></ShoppingTab>
                 )}
 
-                {tab === "your-shop" && (
-                    <div className="text-center" style={{padding: "40px 0"}}>
-                        <h2>🏷️ Merchant Stall</h2>
-                        <p style={{color: "var(--text-secondary)"}}>Your listed items for sale will appear here.</p>
-                    </div>
-                )}
+            {tab === "your-shop" && (
+                <ShoppingTab currentUser={initalUser} isMyShop={true}></ShoppingTab>
+            )}
 
                 {tab === "profile" && (
                 <MyProfileTab currentUser={currentUser} onProfileUpdated={refreshCurrentUser} />

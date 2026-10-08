@@ -49,7 +49,7 @@ export function NavBar({currentUser, activeTab, onLogout, onTabChange}: NavBarPr
                         className={`navbar-item navbar-admin-item ${activeTab === "manage-users" ? "active" : ""}`}
                         onClick={() => onTabChange("manage-users")}
                     >
-                        👑 Manage Users
+                        👑 Management
                     </button>
                 )}
             </div>

@@ -784,3 +784,12 @@ body {
   flex: 1;
   margin-bottom: 0; /* resets the bottom margin on search bar */
 }
+
+.product-thumb-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2rem;
+  color: var(--bubblegum-soft);
+  border: 1.5px dashed var(--bubblegum-soft);
+}
