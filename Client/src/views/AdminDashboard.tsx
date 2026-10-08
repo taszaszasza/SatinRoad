@@ -4,6 +4,8 @@ import {NavBar, type NavTab} from "../components/NavBar.tsx";
 import {useState} from "react";
 import {ManageUsersTab} from "@/views/ManageUsersTab.tsx";
 import {MyProfileTab} from "@/views/MyProfileTab.tsx";
+import {ShoppingTab} from "@/views/ShoppingTab.tsx";
+import {ManagementTab} from "@/views/ManagementTab.tsx";
 
 const MyApi = new Api();
 
@@ -35,17 +37,11 @@ export function AdminDashboard({ currentUser: initalUser, onLogout }: AdminDashb
 
             <div className="dashboard-content">
                 {tab === "shopping" && (
-                    <div className="text-center" style={{padding: "40px 0"}}>
-                        <h2>🛍️️ Contraband Catalog</h2>
-                        <p style={{color: "var(--text-secondary)"}}>Shopping gallery coming here next.</p>
-                    </div>
+                    <ShoppingTab currentUser={initalUser} isMyShop={false}></ShoppingTab>
                 )}
 
                 {tab === "your-shop" && (
-                    <div className="text-center" style={{padding: "40px 0"}}>
-                        <h2>🏷️ Merchant Stall</h2>
-                        <p style={{color: "var(--text-secondary)"}}>Your listed items for sale will appear here.</p>
-                    </div>
+                    <ShoppingTab currentUser={initalUser} isMyShop={true}></ShoppingTab>
                 )}
 
                 {tab === "profile" && (
@@ -54,7 +50,7 @@ export function AdminDashboard({ currentUser: initalUser, onLogout }: AdminDashb
                     
             )}
 
-                {tab === "manage-users" && <ManageUsersTab currentUser={currentUser} /> }
+                {tab === "manage-users" && <ManagementTab currentUser={currentUser} /> }
                 
             </div>
         </div>
