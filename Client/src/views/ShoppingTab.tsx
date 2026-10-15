@@ -84,7 +84,7 @@ export function ShoppingTab({currentUser, isMyShop}: ShoppingTabProps) {
         return ["All", ...Array.from(unique)];
     }, [products]);
 
-    // Frontend filtering: matches both search query and category pill
+    // filters by query and category at the same time
     const filteredProducts = useMemo(() => {
         return products.filter((item: any) => {
             const title = (item.listingName ?? item.ListingName ?? "").toLowerCase();

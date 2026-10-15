@@ -27,13 +27,11 @@ export function EditListingWindow({
                                   }: EditListingWindowProps) {
   const isEditing = Boolean(listing);
 
-  // Form State initialized directly from listing props
   const [listingName, setListingName] = useState(listing?.listingName ?? "");
   const [listingDescription, setListingDescription] = useState(listing?.listingDescription ?? "");
   const [price, setPrice] = useState(listing?.price != null ? String(listing.price) : "");
   const [imageUrl, setImageUrl] = useState(listing?.imageUrl ?? "");
 
-  // Categories list state
   const [availableCategories, setAvailableCategories] = useState<{ id: number; name: string }[]>(
       passedCategories
   );
@@ -45,7 +43,6 @@ export function EditListingWindow({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Fetch categories from API on mount
   useEffect(() => {
     setCategoriesLoading(true);
 
