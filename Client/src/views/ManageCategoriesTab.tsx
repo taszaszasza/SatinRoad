@@ -14,7 +14,6 @@ export function ManageCategoriesTab() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    // New Category Form State
     const [newCatName, setNewCatName] = useState("");
     const [isCreating, setIsCreating] = useState(false);
 

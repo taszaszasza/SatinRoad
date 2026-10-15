@@ -15,7 +15,7 @@ public class DealService(MyDatabaseConnection db)
 
     public static decimal CalculateFinalPrice(decimal price, int dealsCount)
     {
-        bool isDiscounted = (dealsCount + 1) % 10 == 0;
+        bool isDiscounted = dealsCount != 0 &&(dealsCount + 1) % 10 == 0;
         return isDiscounted ? price * 0.8m : price;
     }
 
@@ -67,7 +67,7 @@ public class DealService(MyDatabaseConnection db)
         using var transaction = db.BeginTransaction();
         
         var dealsCount = db.Deals.Count(d => d.Buyer_Id == dto.BuyerId && d.Seller_Id == listing.OwnerId);
-        bool isDiscounted = (dealsCount + 1) % 10 == 0;
+        bool isDiscounted = dealsCount != 0 && (dealsCount + 1) % 10 == 0;
         
         decimal finalPrice = CalculateFinalPrice(listing.Price, dealsCount);
 
