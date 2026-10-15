@@ -2,7 +2,8 @@ import {useEffect, useMemo, useState} from "react";
 import {Api, type ListingDto, Role, type UserDto} from "../../Api.ts";
 import {SearchBar} from "@/components/SearchBar.tsx";
 import {ListingWindow} from "@/components/ListingWindow.tsx";
-import {EditListingWindow} from "@/components/EditListingWindow.tsx"; // adjust path if needed
+import {EditListingWindow} from "@/components/EditListingWindow.tsx";
+import {BuyConfirmationWindow} from "@/components/BuyConfirmationWindow.tsx"; // adjust path if needed
 
 const MyApi = new Api();
 
@@ -16,6 +17,7 @@ export interface GetListingDto {
     categoryName: string;
     ownerId: number;
     ownerName: string;
+    isActive?: boolean;
 }
 
 interface ShoppingTabProps {
@@ -32,6 +34,7 @@ export function ShoppingTab({currentUser, isMyShop}: ShoppingTabProps) {
     const [listing, setListing] = useState<GetListingDto | null>(null);
     const [updateListing, setUpdateListing] = useState<GetListingDto |ListingDto | null>(null);
     const [isCreating, setIsCreating] = useState<boolean>(false);
+    const [buyingListing, setBuyingListing] = useState<GetListingDto | null>(null);
 
 
     function loadProducts() {
@@ -225,8 +228,8 @@ export function ShoppingTab({currentUser, isMyShop}: ShoppingTabProps) {
                 <ListingWindow
                     listing={listing}
                     onClose={() => setListing(null)}
-                    onBuy={(id) => {
-                        console.log("buy", id);
+                    onBuy={() => {
+                        setBuyingListing(listing);
                         setListing(null);
                     }} 
                     onEdit={(listingForEdit) =>{
@@ -250,6 +253,19 @@ export function ShoppingTab({currentUser, isMyShop}: ShoppingTabProps) {
                     onSuccess={() => {
                         setIsCreating(false);
                         loadProducts(); }} /> ) }
+            {buyingListing && (
+                <BuyConfirmationWindow
+                    listing={buyingListing}
+                    buyerId={currentUser.userId}
+                    onClose={() => setBuyingListing(null)}
+                    onSuccess={() => {
+                        setBuyingListing(null);
+                        loadProducts(); // refresh catalog
+                        alert("Order locked! Deal registered in the transaction ledger.");
+                    }}
+                />
+            )}
+            
         </div>
     );
 }
