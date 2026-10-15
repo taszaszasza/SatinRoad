@@ -6,15 +6,25 @@ namespace Service;
 
 public class ListingService(MyDatabaseConnection db)
 {
+
+    public static bool isListingValid(string listingName, decimal price, bool isBanned)
+    {
+        if (string.IsNullOrWhiteSpace(listingName)) return false;
+        if(price <= 0) return false;
+        if(isBanned) return false;
+        
+        return true;
+    }
+
     public Dtos.ListingDto CreateListing(Dtos.CreateListingDto dto)
     {
-        if(string.IsNullOrWhiteSpace(dto.ListingName)) throw new ValidationException("Listing name is required");
-        if (dto.Price <= 0) throw new ValidationException("Incorrect Price");
+        //if(string.IsNullOrWhiteSpace(dto.ListingName)) throw new ValidationException("Listing name is required");
+        //if (dto.Price <= 0) throw new ValidationException("Incorrect Price");
         var owner = db.Users.FirstOrDefault(u => u.UserId == dto.OwnerId);
         if(owner == null) throw new ValidationException("Owner not found");
-        if(owner.IsBanned) throw new ValidationException("Owner is banned");
+        //if(owner.IsBanned) throw new ValidationException("Owner is banned");
         if(!db.Categories.Any(c => c.CategoryId == dto.CategoryId)) throw new ValidationException("Category not found");
-
+        if(!isListingValid(dto.ListingName, dto.Price, owner.IsBanned)) throw new ValidationException("Incorrect ListingName, Price, or the Owner is banned");
         var item = new ListingItem
         {
             ListingName = dto.ListingName.Trim(),
