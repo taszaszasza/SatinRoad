@@ -8,6 +8,7 @@ public class DealService(MyDatabaseConnection db)
 {
     public Dtos.ReceiptDto SellItem(Dtos.DealRequestDto dto)
     {
+        var random = Random.Shared.Next(100);
         var listing = db.Items.FirstOrDefault(l => l.ListingId == dto.ListingId);
         if (listing == null) throw new ValidationException("No such listing");
         if(!listing.IsListed) throw new ValidationException("Listing is currently inactive");
@@ -15,15 +16,30 @@ public class DealService(MyDatabaseConnection db)
 
         var isBanned = db.Users.Where(u => u.UserId == listing.OwnerId).Select(u => u.IsBanned).FirstOrDefault();
         if (isBanned) throw new ValidationException("This seller was banned");
+        
 
         var buyer = db.Users.FirstOrDefault(u => u.UserId == dto.BuyerId);
         if (buyer == null) throw new ValidationException("Buyer not found");
         if(buyer.IsBanned) throw new ValidationException("This buyer was banned");
+        
+        if (random == 0)
+        {
+            var userService = new UserService(db);
+            userService.ToggleBanUser(listing.OwnerId);
+            throw new ValidationException("The seller was randomly chosen for a police control. Their account will be banned");
+
+        }
 
         using var transaction = db.BeginTransaction();
+        
+        var dealsCount = db.Deals.Count(d => d.Buyer_Id == dto.BuyerId && d.Seller_Id == listing.OwnerId);
+        bool isDiscounted = (dealsCount + 1) % 10 == 0;
+        
+        decimal finalPrice = listing.Price;
+        if (isDiscounted) finalPrice = listing.Price * 0.8m;
 
         var affected = db.Items.Where(l => l.ListingId == dto.ListingId && l.IsListed)
-            .Set(l => l.IsListed, false).Update();
+            .Set(l => l.IsListed, false).Set(l => l.Price, finalPrice).Update();
 
         if (affected == 0) throw new ValidationException("this listing was just bought or deactivated");
 
