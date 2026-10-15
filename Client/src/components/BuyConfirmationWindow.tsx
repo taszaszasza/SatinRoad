@@ -45,10 +45,10 @@ export function BuyConfirmationWindow({
             .then((res: any) => {
                 setLoading(false);
                 const receipt = res.data;
-                const finalPrice = receipt?.price ?? receipt?.price ?? 0;
+                const paidPrice = receipt?.pricePaid ?? receipt?.price ?? 0;
                 
-                if (finalPrice < price) {
-                    alert("🎉 Loyalty Discount Applied!\n\nThis was your 10th purchase with @${owner}.\nYour order was discounted by 20% to $${Number(paidPrice).toFixed(2)}!");
+                if (paidPrice < price) {
+                    alert(`🎉 Loyalty Discount Applied!\n\nThis was your 10th purchase with @${owner}.\nYour order was discounted by 20% to $${Number(paidPrice).toFixed(2)}!`);
                 }
                 onSuccess(res.data);
             })
