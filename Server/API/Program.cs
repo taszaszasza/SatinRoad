@@ -5,9 +5,10 @@ using API;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var connectionString = builder.Configuration["DB"] ?? "Data Source=../Infra/db.db"; 
 
 var options = new DataOptions<MyDatabaseConnection>(
-    new DataOptions().UseSQLite("Data Source=../Infra/db.db"));
+    new DataOptions().UseSQLite(connectionString));
 
 builder.Services.AddScoped<MyDatabaseConnection>(_ => new MyDatabaseConnection(options));
 

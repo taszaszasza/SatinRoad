@@ -1,5 +1,7 @@
 <Solution>
   <Folder Name="/Server/">
+    <File Path="Server\.dockerignore" />
+    <File Path="Server\Dockerfile" />
     <File Path="Server\Tests\obj\project.assets.json" />
     <File Path="Server\Tests\obj\project.nuget.cache" />
     <File Path="Server\Tests\obj\Tests.csproj.nuget.dgspec.json" />
