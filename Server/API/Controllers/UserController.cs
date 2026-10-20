@@ -3,6 +3,8 @@ using Service;
 
 namespace API.Controllers;
 
+[ApiController]
+[Route("api/[controller]")]
 public class UserController(UserService service) : ControllerBase
 {
     [HttpPost(nameof(CreateUser))]
